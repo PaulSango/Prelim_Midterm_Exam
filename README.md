@@ -9,12 +9,12 @@ Note: If you are using chrome you don't need to perform this.
 
 Perform these following:
 
-1.  This only intends for mozilla-firefox user.
-2.  In the main folder, perform the next task, (npm install geckodriver) at (gitbash.exe) which creates node_modules. 
-    So there will be 3 folders overall:
-    ***LoginApp
-    ***Selenium
-    ***node_modules (If you ever wonder why we do this stuff is because we need the geckodriver inside this node_module to perform the test.)
+1.  This only intends for mozilla-firefox user.__
+2.  In the main folder, perform the next task, (npm install geckodriver) at (gitbash.exe) which creates node_modules. __
+    So there will be 3 folders overall:__
+    LoginApp__
+    Selenium__
+    node_modules (If you ever wonder why we do this stuff is because we need the geckodriver inside this node_module to perform the test.)__
 2.  After installing it, node_modules will be downloaded.
 3.  Inside the node_modules you will find the (geckodriver) folder, click it.
 4.  Now you need to copy all the files in selenium folder to (geckodriver folder - inside the node_modules you just created)
@@ -29,11 +29,11 @@ Perform these following:
 You can now test the project.
 
 1.  Go to LoginApp folder:
-    ***Run gitbash.exe on this folder, write (npm start) the project will be running.
+    Run gitbash.exe on this folder, write (npm start) the project will be running.
 2.  Run the selenium standalone server inside the node_modules/geckodriver using gitbash.exe
-    ***This = java -jar -Dwebdriver.geckodriver.driver=./geckodriver selenium-server-standalone-3.0.1.jar
+    This = java -jar -Dwebdriver.geckodriver.driver=./geckodriver selenium-server-standalone-3.0.1.jar
 3.  Run the webdriver.io inside the node_modules/geckodriver using gitbash.exe
-    ***This = ./node_modules/.bin/wdio wdio.conf.js
+    This = ./node_modules/.bin/wdio wdio.conf.js
     
     Please perform this accordingly. Thanks.
 
