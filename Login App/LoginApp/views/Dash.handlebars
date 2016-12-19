@@ -1,0 +1,332 @@
+<title>Dash</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+ <script type="text/javascript">
+  
+  var tablecount=0;
+  var counter; 
+
+
+    $(document).ready(function(){
+      $("#button3").click(function(){
+          document.location = "http://localhost:5050/Index";
+          sessionStorage.clickcount = 0;
+          });
+    });
+
+    $(document).ready(function(){
+      $("#addnew").click(function(){ 
+
+          var email = $("#EmailAddress").val();
+          var pass = $("#Pass").val();
+
+
+              if(!(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/).test(email) || pass.length < 8){
+                $("#warninglog").html("Email or Password Error(Atleast 8 Characters).").fadeIn().delay(2000).fadeOut(2000);
+              }
+              else{
+                $.post("http://localhost:5050/signing-up",{email: email,password: pass}, function(data){
+                      
+                });
+                $("#successlog").html("Registration Success").fadeIn().delay(2000).fadeOut(2000);
+              }
+          });
+    });
+
+
+    $(document).ready(function(){
+      $("#refresh").click(function(){
+
+          tablecount++;
+          //alert(tablecount);
+
+           $.ajax({
+              url: 'http://localhost:5050/Accounts',
+              dataType: 'json',
+              type: 'get',    
+              cache: false,
+
+                  success: function(data)
+                  {
+                      counter = data.length;
+                      var i = counter-1;
+                      var k = 0;
+                        if(tablecount <= 1){
+                          for (; i >= 0 ;) {
+                            $(data).each(function(index, value){ 
+
+                                  //alert("Iteration: "+i);
+                                  //alert("ID: " +value.ID);
+
+                                  if(i==value.ID){
+
+                                        var table = document.getElementById("myTable");
+                                        var row = table.insertRow(0);
+                                        var z = row.insertCell(0);
+                                        var x = row.insertCell(1);
+                                        var c = row.insertCell(2);
+                                        c.innerHTML = value.ID;
+                                        z.innerHTML = value.Email;
+                                        x.innerHTML = value.Password;
+
+                                    k++;
+                                    i--;
+                                  }       
+                            });
+                          }
+                        }
+                          $("#successlog").html("Account has been accessed: "+counter).fadeIn().delay(2000).fadeOut(2000);
+                          var thistable = document.getElementById("myTable");
+                          thistable.deleteRow(counter); //mylastproblem fcking shit
+                      if(tablecount>1){
+                          return false;
+                      }
+                      if(k==counter){
+
+                             //alert(counter);
+                              //alert("K=2");                 
+                              return false;
+                      }
+                  }
+
+            });
+
+
+
+          });
+    });
+
+
+    var edit;
+    $(document).ready(function(){
+      $("#search").click(function(){ 
+
+        document.getElementById("yousearch").innerHTML = "Search History";  
+
+        tablecount=0;
+        //alert(searchcount);
+        var searched;
+
+            $.ajax({
+              url: 'http://localhost:5050/Accounts',
+              dataType: 'json',
+              type: 'get',    
+              cache: false,
+
+              success: function(data){
+                  counter = data.length;
+                
+                  $(data).each(function(index, value){ 
+
+                      var a = document.getElementById('SearchBox').value;
+                      if(a == value.Email){
+      
+                          var table = document.getElementById("searchTable");
+                          var row = table.insertRow(0);
+                          var z = row.insertCell(0);
+                          var x = row.insertCell(1);
+                          var c = row.insertCell(2);
+                          c.innerHTML = value.ID;
+                          z.innerHTML = value.Email;
+                          x.innerHTML = value.Password;
+                          edit = value.ID;
+                          searched = "good";
+
+
+                      }
+
+                  });
+
+                    if(searched == "good"){
+                          $("#searchlog").html("Search Found!").fadeIn().delay(2000).fadeOut(2000);
+                          var table = document.getElementById("myTable");
+                          var rowCount = table.rows.length;
+                          for (var i=0; i < rowCount; i++) {
+                                table.deleteRow(1);
+                            }
+                        }
+                    else{
+                          $("#searchlog").html("User Not Found!").fadeIn().delay(2000).fadeOut(2000);
+                    }   
+              }
+          });
+
+
+        // http://stackoverflow.com/questions/16258658/deleting-table-rows-in-javascript
+                          var table = document.getElementById("myTable");
+                          var rowCount = table.rows.length;
+                            for (var i=0; i <= rowCount; i++) {
+                                table.deleteRow(1);
+                            }
+                            for (var i=0; i < 1000; i++) {
+                                table.deleteRow(i);
+                            }
+                });
+    });
+
+
+  
+
+    $(document).ready(function(){
+      $("#update").click(function(){
+
+            
+          var email = $("#EmailAddress").val();
+          var pass = $("#Pass").val();
+          var id = edit;
+
+              if(!(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/).test(email) || pass.length < 8){
+                $("#warninglog").html("Email or Password Error(Atleast 8 Characters).").fadeIn().delay(2000).fadeOut(2000);
+              }
+              else{
+                $.post("http://localhost:5050/updating",{email: email,identification:id,password:pass}, function(data){
+                      
+                });
+                $("#successlog").html("Update Success").fadeIn().delay(2000).fadeOut(2000);
+              }
+          });
+    });
+
+
+
+
+    $(document).ready(function(){
+      $("#delete").click(function(){ 
+         
+          var id = edit;
+
+          $.post("http://localhost:5050/deleting",{identification:id}, function(data){
+                      
+          });
+          $("#successlog").html("Delete Success").fadeIn().delay(2000).fadeOut(2000);
+
+          });
+    });
+
+
+  </script>
+
+
+<!-- Icon Bar (Sidenav - hidden on small screens) -->
+<nav class="w3-sidenav w3-center w3-small w3-hide-small">
+  <!-- Avatar image in top left corner -->
+  <img src="http://www.how-to-draw-funny-cartoons.com/image-files/cartoon-mosquito-9.gif" style="width:100%">
+  <a class="w3-padding-large w3-black" id="ToMain" href="http://localhost:5050/">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>HOME</p>
+  </a>
+  <a class="w3-padding-large w3-hover-black" id="ToRoot" href="http://localhost:5050/Root">
+    <i class="fa fa-eye w3-xxlarge"></i>
+    <p>INITIATION</p>
+  </a>
+  <a class="w3-padding-large w3-hover-black" id="ToRegister" href="http://localhost:5050/Registration">
+    <i class="fa fa-user w3-xxlarge"></i>
+    <p>SIGN-UP</p>
+  </a>
+  <a class="w3-padding-large w3-hover-black" id="ToLogin" href="http://localhost:5050/Index">
+    <i class="fa fa-envelope w3-xxlarge"></i>
+    <p>SIGN-IN</p>
+  </a>
+</nav>
+
+
+
+
+<!-- Page Content -->
+  <div class="w3-padding-large" id="main">
+  <!-- Header/Home -->
+  <header class="w3-container w3-padding-32 w3-center w3-black"> 
+    <h1 class="w3-jumbo"><span class="w3-hide-small">Welcome</span></h1>
+    <p>Introductory of the project</p>
+  </header>
+  </div>
+  
+  <!-- Buttons http://fontawesome.io/icons/ -->
+    <div style="margin-left: 72em">
+      <button class="w3-btn w3-light-grey w3-padding-large" type="button" id="button3">
+        <i class="fa fa-sign-out" aria-hidden="true"></i> <div id="confirm-navigation">SIGN-OUT</div>
+      </button>
+    </div>
+    <div id="tabs" class="w3-padding-64 w3-content w3-text-grey"><p>
+        <button class="w3-btn w3-light-grey w3-padding-large" type="button" id="search">
+          <i class="fa fa-search" aria-hidden="true"> SEARCH</i> 
+        </button>
+        <div id="searchlog"></div>
+        <p><input class="w3-input w3-padding-16" type="text" id="SearchBox" placeholder="Search Here" required name="Searching..."></p>
+    </p></div>
+
+
+  <!-- Contact Section -->
+
+  <div class="w3-padding-64 w3-content w3-text-grey">
+    <hr style="width:200px" class="w3-opacity">
+
+
+    <form> 
+      <p>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Email Address&ensp;&ensp;&ensp;&ensp;</th>
+              <th>Password</th>
+              <th>ID</th>
+            </tr>
+          </thead>
+        </table>
+
+        <p>Account List</p>
+        <table class="table table-striped" id="myTable">
+
+        </table> 
+
+        <p id="yousearch"></p>
+        <table class="table table-striped" id="searchTable">
+
+        </table> 
+
+      </p>
+    </form>
+  <!-- End Contact Section -->
+  </div>
+
+    <!-- Buttons -->
+  
+  <div id="tabs" class="w3-padding-64 w3-content w3-text-grey"><p>
+      <div id="warninglog"></div><div id="successlog"></div>
+      <p><input class="w3-input w3-padding-16" type="text" id="EmailAddress" placeholder="Email Address" required name="Email"></p>
+      <p><input class="w3-input w3-padding-16" type="password" id="Pass" placeholder="Password" required name="Password"></p>
+
+        <!-- buttons command -->
+          <button class="w3-btn w3-light-grey w3-padding-large" type="button" id="addnew">
+            <i class="fa fa-user-circle-o" aria-hidden="true"> ADD-NEW</i> 
+          </button>
+          <button class="w3-btn w3-light-grey w3-padding-large" type="button" id="update">
+            <i class="fa fa-id-card-o" aria-hidden="true"> UPDATE</i> 
+          </button>
+          <button class="w3-btn w3-light-grey w3-padding-large" type="button" id="delete">
+            <i class="fa fa-window-close" aria-hidden="true"> DELETE</i> 
+          </button>
+          <button class="w3-btn w3-light-grey w3-padding-large" type="button" id="refresh">
+            <i class="fa fa-refresh" aria-hidden="true"> REFRESH/SHOW TABLE</i> 
+          </button>
+
+  </p></div>
+
+
+
+    <!-- Footer -->
+ 
+  <footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
+    <a href="www.facebook.com/pieyyouelph"><i class="fa fa-facebook-official w3-hover-text-indigo"></i></a>
+    <a href="www.twitter.com/pieyyouel"><i class="fa fa-twitter w3-hover-text-light-blue"></i></a>
+    <i class="fa fa-instagram w3-hover-text-purple"></i>
+    <i class="fa fa-snapchat w3-hover-text-yellow"></i>
+    <i class="fa fa-pinterest-p w3-hover-text-red"></i>
+    <i class="fa fa-linkedin w3-hover-text-indigo"></i>
+    <p class="w3-medium">Paul Sango</p>
+  <!-- End footer -->
+  </footer>
+
+<!-- END PAGE CONTENT -->
+</div>
+
