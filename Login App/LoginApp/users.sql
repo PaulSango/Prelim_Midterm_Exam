@@ -37,8 +37,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`Email`, `Password`, `ID`) VALUES
-('admin@gmail.com', 'admin123', 0),
-('pieyyouel@gmail.com', 'pieyyouel123', 1);
+('admin@gmail.com', 'admin123', 0);
 
 --
 -- Indexes for dumped tables
