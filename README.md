@@ -11,9 +11,9 @@ Perform these following:
 
 1.  This only intends for mozilla-firefox user.
 2.  In the main folder, perform the next task, (npm install geckodriver) at (gitbash.exe) which creates node_modules.<br />
-    So there will be 3 folders overall:
-    LoginApp
-    Selenium
+    So there will be 3 folders overall:<br />
+    LoginApp<br />
+    Selenium<br />
     node_modules (If you ever wonder why we do this stuff is because we need the geckodriver inside this node_module to perform the test.)<br />
 2.  After installing it, node_modules will be downloaded.
 3.  Inside the node_modules you will find the (geckodriver) folder, click it.
