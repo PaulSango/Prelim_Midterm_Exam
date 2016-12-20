@@ -1,7 +1,7 @@
 # Finals<br />
 # First:<br />
 ------
-Run the xammp-control and open the mysql, use the users.sql(this is database code)file to create database inside the LoginApp under package.json
+Run the xammp-control and open the mysql, use the users.sql(this is database code)file to create database inside the LoginApp. The location of the code is in LoginApp folder under package.json
 
 # Secondly:<br />
 ------
